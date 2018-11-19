@@ -125,15 +125,15 @@ def do_stanza(module, filename, stanza, options, state='present', backup=False, 
     # append fake stanza lines to simplify the logic
     # Fake random stanza to avoid matching anything  other in the file
     # Using commit hash as fake stanza name
-    fake_section_name = "ad01e11446efb704fcdbdb21f2c43757423d91c5"
+    fake_stanza_name = "ad01e11446efb704fcdbdb21f2c43757423d91c5"
 
     # Insert it at the beginning
-    stanza_lines.insert(0, '[%s]' % fake_section_name)
+    stanza_lines.insert(0, '[%s]' % fake_stanza_name)
 
     # At botton:
     stanza_lines.append(':')
 
-    # If no section is defined, fake section is used
+    # If no sstanza is defined, fake stanza is used
     if not stanza:
         stanza = fake_stanza_name
 
@@ -152,16 +152,16 @@ def do_stanza(module, filename, stanza, options, state='present', backup=False, 
             stanza_start = index
             if within_stanza:
                 if state == 'present':
-                    # loop through options dict
-                    for opt in list(options.keys()):
-                        # insert missing option lines at the end of the section
-                        for i in range(index, 0, -1):
-                            # search backwards for previous non-blank or non-comment lines
-                            if not re.match('^[ \t]*([#;].*)?$', stanza_lines[i - 1]):
-                                stanza_lines.insert(i, option_format % (opt, options[opt]))
-                                msg = 'options added'
-                                changed = True
-                                break
+                    # insert missing option lines at the end of the stanza 
+                    for i in range(index, 0, -1):
+                        # search backwards for previous non-blank or non-comment lines
+                        if not re.match('^[ \t]*([#;].*)?$', stanza_lines[i - 1]):
+                                # loop through options dict
+                                for opt in list(options.keys()):
+                                    stanza_lines.insert(i, option_format % (opt, options[opt]))
+                                    msg = 'options added'
+                                    changed = True
+                                    break
                 elif state == 'absent' and not options:
                     # remove the entire stanza if no option lines present
                     del stanza_lines[stanza_start:index]
