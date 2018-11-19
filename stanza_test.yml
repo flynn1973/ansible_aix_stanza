@@ -1,0 +1,13 @@
+- name: testme 
+  hosts: localhost 
+  gather_facts: no
+
+  tasks:
+      
+    - name: stanza test
+      aix_stanza: 
+        dest: /root/stanza_test
+        stanza: fideloper24
+        options: SYSTEM=LDAP,registry=LDAP,bla=blaa 
+        backup: no 
+        state: present 
