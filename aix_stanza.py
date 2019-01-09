@@ -82,7 +82,7 @@ import tempfile
 import traceback
 from ansible.module_utils.basic import *
 
-#import pdb; pdb.set_trace()
+import pdb; pdb.set_trace()
 
 
 def do_stanza(module, filename, stanza, options, state='present', backup=False, create=True):
